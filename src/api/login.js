@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import grobal from '@/golbar/grobal'
 
 export function login(username, password, code, uuid) {
   return request({

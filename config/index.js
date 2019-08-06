@@ -10,18 +10,45 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/plat':{
-        // target: 'http://192.168.43.22:1080',
-        target: 'http://com.dolphin.getway:9003/dolphin-manager',
+      // 授权
+      '/auth':{
+        // target: 'http://127.0.0.1:8000/auth',
+        target: 'http://com.dolphin.getway:9003/dolphin-manager/auth',
           changeOrigin:true,
           pathRewrite:{
-          '^/plat':''
+          '^/auth':''
           }
-      }
+      },
+      // 平台api
+      '/api':{
+        // target: 'http://127.0.0.1:8000/api',
+        target: 'http://com.dolphin.getway:9003/dolphin-manager/api',
+          changeOrigin:true,
+          pathRewrite:{
+          '^/api':''
+          }
+      },
+      '/system/api':{
+        // target: 'http://127.0.0.1:8000/api',
+        target: 'http://com.dolphin.getway:9003/dolphin-manager/api',
+          changeOrigin:true,
+          pathRewrite:{
+          '^/system/api':''
+          }
+      },
+      // 网站
+      '/mastery_web':{
+        // target: 'http://127.0.0.1:6008',
+        target: 'http://com.dolphin.getway:9003/mastery',
+          changeOrigin:true,
+          pathRewrite:{
+          '^/mastery_web':''
+          }
+      },
     },
 
     // Various Dev Server settings
-    host: '0.0.0.0', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8013, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
