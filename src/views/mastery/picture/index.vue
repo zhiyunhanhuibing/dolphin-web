@@ -214,18 +214,6 @@
         console.log(this.tabT.name);
         this.page = val;
         this.getData();
-        // if (this.tabT.name = "undefined") {
-        //       this.getData();
-        //     }
-        //     if (this.tabT.name == "first") {
-        //       this.getData()
-        //     } else if (this.tabT.name == "second") {
-        //       this.getData1();
-        //     } else if (this.tabT.name == "third") {
-        //       this.getData2();
-        //     } else if (this.tabT.name == "fourth") {
-        //       this.getData3();
-        //     }
         console.log(`当前页: ${val}`);
         },
         handleRemove(file, fileList) {
