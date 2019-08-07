@@ -39,9 +39,8 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   import moment from "moment";
-  import {selectAll,query} from '@/api/customer'
+  import {selectAll,query} from '@/api/mastery/customer'
   export default {
     data() {
       return {

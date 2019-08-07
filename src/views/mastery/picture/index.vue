@@ -33,7 +33,7 @@
         </div>
     </div>
     <!-- 弹框-->
-    <el-dialog :visible.sync="dialog">
+    <el-dialog append-to-body :visible.sync="dialog">
       <el-form
         :model="formInline"
         :rules="rules"
@@ -84,7 +84,7 @@
         <el-button type="primary" @click="postUpdata()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialog1" :inline="true">
+    <el-dialog append-to-body :visible.sync="dialog1" :inline="true">
       <el-form :model="mondify" class="demo-form-inline" ref="formInline1" :inline="true">
         <el-row :gutter="24">
           <el-col :span="12">
@@ -95,7 +95,6 @@
           <el-col :span="12">
             <el-form-item label="图片顺序：">
               <el-input v-model="mondify.fileSort" placeholder="图片顺序:" style="width:250px"></el-input>
-              <!-- <el-table-column  label="发布时间" :formatter="dateFormat" width="180"></el-table-column> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -133,8 +132,9 @@
 </template>
 <script>
     import request from '@/utils/request'
-    import { queryArticle } from '@/api/mastery'
+    import { queryArticle,updataArticle,deletArticle } from '@/api/mastery/picture'
     // import moment from "moment";
+    import moment from "moment";
     // import menu1 from '@/components/menu.vue'
     export default {
     data() {
@@ -146,7 +146,7 @@
         totalSize: 1,
         pageSize: 8,
         page: 1,
-        actions: "/plat/upload/uploadFile",
+        actions: "/mastery_web/upload/uploadFile",
         dialogImageUrl: "",
         dialogVisible: false,
         productImgs: [],
@@ -265,30 +265,26 @@
         this.$message.error("上传图片失败!");
         },
         // 转换获取时间
-        // dateFormat: function(row, column) {
-        // var data = row[column.property];
-        // if (data == undefined) {
-        //     return "";
-        // }
-        // return moment(data).format("YYYY-MM-DD");
-        // },
+        dateFormat: function(row, column) {
+        var data = row[column.property];
+        if (data == undefined) {
+            return "";
+        }
+        return moment(data).format("YYYY-MM-DD");
+        },
         getData() {
           queryArticle(10,this.pageSize,this.page).then(res => {
             console.log(res)
             this.tableData = res.resultList;
             this.categoryId = 10;
-            this.totalSize = res.data.totalSize;
+            this.totalSize = res.totalSize;
           }).catch(err => {
             console.log(err);
             });
         },
 
         postUpdata() {
-        // this.getData(this.iiii);
-        // console.log(this.iiii);
-        this.dialog = false;
-        axios
-            .post("/plat/file/add", {
+          let params = {
             fileTitle: this.formInline.fileTitle,
             fileSort: this.formInline.fileSort,
             categoryId: 10,
@@ -296,46 +292,49 @@
             realName: this.fileOldName,
             uploadName: this.fileUploadName,
             url: this.uploadUrl
-            })
-            .then(res => {
-            console.log(res);
-            if (res.status == 200) {
-                this.$message({
-                message: "恭喜你，添加成功",
+          }
+          updataArticle(params).then(res => {
+            if (res) {
+              this.$message({
+                message: res.message,
                 type: "success"
-                });
+              });
+              this.getData();
+              this.dialog = false;
             }
-            this.getData();
-            })
-            .catch(err => {
-            console.log(err);
+          }).catch(err => {
+            this.$message({
+              message: err.message,
+              type: "error"
             });
+          }); 
         },
         postUpdata1() {
-        (this.dialog1 = false),
-            axios
-            .post("/plat/file/add", {
-                fileTitle: this.mondify.fileTitle,
-                fileSort: this.mondify.fileSort,
-                categoryId: this.categoryId1,
-                fileId: this.fileId,
-                realName: this.fileOldName,
-                uploadName: this.fileUploadName,
-                url: this.uploadUrl
-            })
-            .then(res => {
-                console.log(res);
-                if (res.status == 200) {
-                this.$message({
-                    message: "恭喜你，修改成功",
-                    type: "success"
-                });
-                }
-                this.getData(categoryId);
-            })
-            .catch(err => {
-                console.log(err);
+          this.dialog1 = false
+          let params = {
+            fileTitle: this.mondify.fileTitle,
+            fileSort: this.mondify.fileSort,
+            categoryId: this.categoryId1,
+            fileId: this.fileId,
+            realName: this.fileOldName,
+            uploadName: this.fileUploadName,
+            url: this.uploadUrl
+          }
+          updataArticle(params).then(res => {
+            if (res) {
+              this.$message({
+                  message: res.message,
+                  type: "success"
+              });
+              this.getData(params.categoryId);
+            }
+          }).catch(err => {
+            this.$message({
+              message: res.message,
+              type: "error"
             });
+          });
+            
         },
         //添加轮播图
         push() {
@@ -357,49 +356,30 @@
         console.log(index, row);
         },
         handleDelete(index, row) {
-        // console.log(this.tabT.name);
-        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-        })
-            .then(() => {
-            this.$message({
+          this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+          }).then(() => {   
+            deletArticle(row.fileId).then(res => {
+              this.$message({
                 type: "success",
-                message: "删除成功!"
+                message: res.message
+              });   
+              let categoryId = row.categoryId;
+              this.getData(categoryId);
+            }).catch(err => {
+              this.$message({
+                type: "error",
+                message: err.message
+              });  
             });
-            axios
-                .get("/plat/file/delete?fileId=" + row.fileId, {
-                // fileId: row.fileId
-                })
-                .then(res => {
-                // if (name == 'first')
-
-                // this.getData(name)
-                // console.log(this.getData(name))
-                let categoryId = row.categoryId;
-                // console.log(categoryId)
-                // var tab = [];
-                // tab["first"] = 10;
-                // tab["second"] = 20;
-                // tab["third"] = 30;
-                // tab["fourth"] = 40;
-                this.getData(categoryId);
-
-                // console.log(this.iiii)
-                // this.getData(this.iiii)
-                })
-                // this.$route.go(0)
-                .catch(err => {
-                console.log(err);
-                });
-            })
-            .catch(() => {
+          }).catch(() => {
             this.$message({
-                type: "info",
-                message: "已取消删除"
+              type: "info",
+              message: "已取消删除"
             });
-            });
+          });
         },
         handleRemove(file, fileList) {
         this.hideUpload = fileList.length >= this.limitCount;
