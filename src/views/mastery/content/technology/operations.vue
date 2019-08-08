@@ -82,7 +82,6 @@
     import fwb from "@/views/mastery/content/richText";
     import moment from "moment";
     import ueditor from "@/views/mastery/content/ueditor";
-    import content from "@/views/mastery/content/content";
     import {Query,Modify,Add,Remove} from '@/api/mastery/solution'
     export default {
         data() {
@@ -110,7 +109,6 @@
         },
         components: {
             fwb,
-            content,
             ueditor
         },
         created() {

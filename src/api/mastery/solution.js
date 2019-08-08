@@ -30,7 +30,7 @@ export function Add(params) {
 //解决方案-删除
 export function Remove(articleId) {
     return request({
-      url: grobal.MASTERY_WEB + '/plat/web/removeArticle?articleId=' + articleId,
+      url: grobal.MASTERY_WEB + '/web/removeArticle?articleId=' + articleId,
       method: 'get'
     })
 }

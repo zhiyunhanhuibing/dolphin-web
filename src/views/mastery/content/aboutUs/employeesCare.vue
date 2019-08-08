@@ -112,7 +112,7 @@ export default {
     ueditor
   },
   created() {
-    this.getData(50);
+    this.getData(210);
   },
   methods: {
     par(data){
@@ -202,12 +202,12 @@ export default {
       this.dialogVisible = true;
     },
     getData() {
-      Query(50,this.pageSize,this.page)
+      Query(210,this.pageSize,this.page)
       .then(res => {
         console.log(res);
         this.tableData = res.resultList;
           this.totalSize = res.totalSize;
-          this.categoryId = 50;
+          this.categoryId = 210;
       });
     },
     handleClick(tab, event) {
