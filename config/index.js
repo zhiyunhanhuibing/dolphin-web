@@ -38,8 +38,8 @@ module.exports = {
       },
       // 网站
       '/mastery_web':{
-        // target: 'http://127.0.0.1:6008',
-        target: 'http://com.dolphin.getway:9003/mastery',
+        target: 'http://192.168.43.82:6003',
+        // target: 'http://com.dolphin.getway:9003/mastery',
           changeOrigin:true,
           pathRewrite:{
           '^/mastery_web':''
@@ -48,7 +48,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.43.126', // can be overwritten by process.env.HOST
     port: 8013, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
