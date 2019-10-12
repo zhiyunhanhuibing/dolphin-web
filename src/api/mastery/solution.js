@@ -21,7 +21,7 @@ export function Modify(params) {
 //解决方案-添加
 export function Add(params) {
     return request({
-      url: grobal.MASTERY_WEB + '/file/add',
+      url: grobal.MASTERY_WEB + '/file/addFiles',
       method: 'post',
       data: params
     })

@@ -143,6 +143,7 @@
 // 1、引入VueUeditorWrap组件
 import axios from "axios";
 import {addArticle} from '@/api/mastery/solution'
+
 import VueUeditorWrap from "vue-ueditor-wrap"; // ES6 Module
 // const VueUeditorWrap = require('vue-ueditor-wrap') // CommonJS
 export default {
@@ -169,7 +170,7 @@ console.log(this.categoryId)
       categoryId:0
       },
       url:'',
-      actions: '/plat/upload/uploadFile',
+      actions: '/mastery_web/upload/uploadFile',
         dialogImageUrl: '',
         dialogVisible: false,
         productImgs: [],
@@ -394,11 +395,9 @@ console.log(this.categoryId)
       }
       addArticle(params)
         .then(res => {
-          console.log(res);
-          this.parmas.businessId = res.data
-          console.log(this.parmas.businessId)
+          
         });
-      console.log(this.msg);
+      this.parmas.businessId = this.categoryId
       this.$emit('par',this.parmas)
     },
     // 7. 借助 beforeInit 钩子，你可以实现对 UEditor 的二次开发，会在 scripts 加载完毕之后、编辑器初始化之前触发，以 编辑器 id 和 配置参数 作为入参

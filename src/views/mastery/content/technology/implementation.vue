@@ -112,7 +112,7 @@
             ueditor
         },
         created() {
-            this.getData(50);
+            this.getData(130);
         },
         methods: {
             par(data){
@@ -207,7 +207,7 @@
                             console.log(res);
                             this.tableData = res.resultList;
                             this.totalSize = res.totalSize;
-                            this.categoryId = 50;
+                            this.categoryId = 130;
                         });
             },
             handleClick(tab, event) {

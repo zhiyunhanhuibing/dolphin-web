@@ -117,9 +117,6 @@ export default {
   methods: {
     par(data){
       this.pary=data
-      console.log(data)
-      // this.businessId = data.businessId
-      console.log(data.businessId)
       var json =[]
     for(let i in this.pary.realName){
       var j={};
@@ -128,11 +125,6 @@ export default {
       j['realName'] = this.pary.realName[i];
       j['uploadName'] = this.pary.uploadName[i];
       j['url'] = this.pary.url[i];
-
-      // j.businessId=this.pary.businessId;
-      // j.categoryId=this.pary.categoryId;
-      // j.realName=this.pary[i]
-      // console.log(this.pary[i])
       json.push(j);
     }
      var a = json;  
