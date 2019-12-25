@@ -121,6 +121,9 @@
             },
             entryshow(data) {
                 this.dialogVisible = data
+                if (!data) {
+                    this.getData(70);
+                }
             },
             par(data){
                 this.pary=data
