@@ -56,7 +56,7 @@
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
         :on-exceed="handleExceed"
-        :on-error="imgUploadError">
+        :on-error="imgUploadError" ref="upload1">
         <i class="el-icon-plus"></i>
       </el-upload> 
       <el-dialog :visible.sync="dialogVisible">
@@ -82,7 +82,7 @@
         :on-success="handleAvatarSuccess1"
         :before-upload="beforeAvatarUpload1"
         :on-exceed="handleExceed1"
-        :on-error="imgUploadError1">
+        :on-error="imgUploadError1" ref="upload2">
         <i class="el-icon-plus"></i>
       </el-upload> 
       <el-dialog :visible.sync="dialogVisible">
@@ -108,7 +108,7 @@
         :on-success="handleAvatarSuccess2"
         :before-upload="beforeAvatarUpload2"
         :on-exceed="handleExceed2"
-        :on-error="imgUploadError2">
+        :on-error="imgUploadError2" ref="upload3">
         <i class="el-icon-plus"></i>
       </el-upload> 
       <el-dialog :visible.sync="dialogVisible">
@@ -160,11 +160,31 @@ export default {
       js:''
     }
     this.msg = ""
-    this.dialogImageUrl = ''
   },
-  props:['categoryId'],
+  watch: {
+    showdialg(res) {
+      if (!res) {
+        this.ruleForm={
+          jc: "",
+          qc: "",
+          sx: "",
+          js:''
+        }
+        this.msg = ""
+        console.log(this.productImgs)
+        this.$refs.upload1.clearFiles()
+        this.$refs.upload2.clearFiles()
+        this.$refs.upload3.clearFiles()
+        this.hideUpload = false
+        this.hideUpload1 = false
+        this.hideUpload2 = false
+      }
+    }
+  },
+  props:['categoryId','showdialg'],
   data() {
     return {
+      imageUrl: "",
       hideUpload: false,
       hideUpload1: false,
       hideUpload2: false,
@@ -218,7 +238,7 @@ export default {
         // 初始容器宽度
         initialFrameWidth: "100%",
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: "http://192.168.43.82:6003/ueditor/config"
+        serverUrl: "http://192.168.43.82:6002/ueditor/config"
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
         // UEDITOR_HOME_URL: '/static/UEditor/'
         // 配合最新编译的资源文件，你可以实现添加自定义Request Headers,详情https://github.com/HaoChuan9421/ueditor/commits/dev-1.4.3.3
@@ -401,12 +421,29 @@ export default {
         categoryId:this.categoryId,
       }
       this.parmas.businessId = ''
-      addArticle(params)
-        .then(res => {
-          
-        });
-      this.parmas.businessId = this.categoryId
-      this.$emit('par',this.parmas)
+      // console.log(params)
+      if (params.abbreviation != '' && params.articleTitle != '') {
+        if (this.parmas.realName.length <= 0) {
+          addArticle(params)
+          .then(res => {
+            this.parmas.businessId = res.categoryId
+            this.$emit('par',this.parmas)
+            this.$emit('entryshow',false)
+          });
+        } else {
+          addArticle(params)
+          .then(res => {
+            this.parmas.businessId = res.categoryId
+            this.$emit('par',this.parmas)
+            this.$emit('entryshow',true)
+            this.$emit('entrydis',false)
+          });
+        }
+        
+      } else {
+        this.$message.error('请填写简称和全称！');
+      }
+      
     },
     // 7. 借助 beforeInit 钩子，你可以实现对 UEditor 的二次开发，会在 scripts 加载完毕之后、编辑器初始化之前触发，以 编辑器 id 和 配置参数 作为入参
     addCustomUI(editorId, editorConfig) {

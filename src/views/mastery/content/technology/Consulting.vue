@@ -25,7 +25,7 @@
                     </el-table-column>
                     <el-table-column align='center' label="详情">
                         <template slot-scope="scope">
-                            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                            <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button> -->
                             <el-button
                                     size="mini"
                                     type="danger"
@@ -48,11 +48,11 @@
         </div>
         <el-dialog title="详情页编写" append-to-body :visible.sync="dialogVisible" :close-on-click-modal="false" width="70%">
             <div>
-                <fwb :categoryId="this.categoryId" @par="par"></fwb>
+                <fwb :categoryId="this.categoryId" :showdialg="this.dialogVisible" @par="par" @entryshow="entryshow" @entrydis="entrydis"></fwb>
             </div>
             <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="yes()">确 定</el-button>
+        <el-button type="primary" @click="yes()" :disabled="ENTRYDIS">确 定</el-button>
       </span>
         </el-dialog>
         <el-dialog title="详情修改" append-to-body :visible.sync="dialog1" :close-on-click-modal="false" width="70%">
@@ -86,6 +86,7 @@
     export default {
         data() {
             return {
+                ENTRYDIS: true,
                 pary:{},
                 currentPage4:1,
                 totalSize:1,
@@ -115,6 +116,12 @@
             this.getData(150);
         },
         methods: {
+            entrydis(data) {
+                this.ENTRYDIS = data
+            },
+            entryshow(data) {
+                this.dialogVisible = data
+            },
             par(data){
                 this.pary=data
                 console.log(data)
@@ -199,6 +206,7 @@
                 this.getData()
             },
             add() {
+                this.ENTRYDIS = true;
                 this.dialogVisible = true;
             },
             getData() {

@@ -38,7 +38,7 @@ module.exports = {
       },
       // 网站
       '/mastery_web':{
-        target: 'http://192.168.43.82:6003',
+        target: 'http://192.168.43.82:6002',
         // target: 'http://com.dolphin.getway:9003/mastery',
           changeOrigin:true,
           pathRewrite:{

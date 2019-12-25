@@ -69,8 +69,7 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
               :on-exceed="handleExceed"
-              :on-error="imgUploadError"
-            >
+              :on-error="imgUploadError" ref="upload1">
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
@@ -192,6 +191,18 @@
     created() {
         this.getData();
     },
+    // watch: {
+    //   dialog(data) {
+    //     console.log(this.m)
+    //     if (!data) {
+    //       this.dialog = false;
+    //       this.hideUpload = false;
+    //       this.mondify.fileTitle = ""
+    //       this.mondify.fileSort = ""
+    //       this.$refs.upload1.clearFiles()
+    //     }
+    //   }
+    // },
     methods: {
         toggle(showtype) {
         this.collapsed = !showtype;
@@ -300,7 +311,6 @@
                 type: "success"
               });
               this.getData();
-              this.dialog = false;
             }
           }).catch(err => {
             this.$message({
