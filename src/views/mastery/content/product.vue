@@ -121,6 +121,12 @@
             },
             entryshow(data) {
                 this.dialogVisible = data
+<<<<<<< HEAD
+=======
+                if (!data) {
+                    this.getData(60);
+                }
+>>>>>>> 修改bug
             },
             par(data){
                 this.pary=data
