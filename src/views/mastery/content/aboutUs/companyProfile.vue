@@ -121,12 +121,9 @@ export default {
     },
     entryshow(data) {
       this.dialogVisible = data
-<<<<<<< HEAD
-=======
       if (!data) {
         this.getData(170);
       }
->>>>>>> 修改bug
     },
     par(data){
       this.pary=data
